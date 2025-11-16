@@ -1,0 +1,11 @@
+#!/bin/bash
+set -e
+DIR="$(cd "$(dirname "$0")" && pwd)"
+ABS_BIN="$(cd "$DIR/.." && pwd)/pqc_qkd_cli"
+if [ -x "$ABS_BIN" ]; then
+  /usr/bin/osascript \
+    -e 'tell application "Terminal" to do script "'"$ABS_BIN"'"' \
+    -e 'tell application "Terminal" to activate'
+else
+  /usr/bin/osascript -e 'display dialog "Missing dist/pqc_qkd_cli. Build it first (scripts/build_app.sh)." buttons {"OK"} with icon caution'
+fi
