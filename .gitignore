@@ -1,0 +1,30 @@
+# Python
+.venv/
+__pycache__/
+*.pyc
+
+# C/C++
+*.o
+*.a
+*.dSYM/
+
+# CMake
+build/
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+
+# PyInstaller / dist artifacts
+dist/
+
+# pqc_core build outputs
+pqc_core/libpqc_core.a
+pqc_core/example
+pqc_core/test
+pqc_core/build/
+
+# embedded host binary
+pqc_embedded/embedded_demo
+
+# OS
+.DS_Store
