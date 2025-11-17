@@ -28,3 +28,6 @@ pqc_embedded/embedded_demo
 
 # OS
 .DS_Store
+
+# Local user data (login store)
+data/users.json
