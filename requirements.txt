@@ -2,3 +2,6 @@ numpy>=1.26
 networkx>=3.2
 matplotlib>=3.8
 pyinstaller>=6.9
+cryptography>=42.0
+# Optional: PQC KEM via liboqs (install if available)
+# oqs>=0.9.0

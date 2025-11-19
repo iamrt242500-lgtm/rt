@@ -4,6 +4,14 @@ import hashlib
 import binascii
 from typing import Dict, Tuple
 
+# Optional secure storage (AES-GCM; optionally PQC-derived)
+try:
+    from . import secure_store as _secure_store  # type: ignore
+    _HAS_SECURE = True
+except Exception:
+    _secure_store = None  # type: ignore
+    _HAS_SECURE = False
+
 DEFAULT_ROUNDS = 200_000
 
 USERS_PATH = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'data', 'users.json')
@@ -56,11 +64,27 @@ def verify_password(password: str, salt_hex: str, rounds: int, hash_hex: str) ->
 
 def load_users() -> Dict:
     _ensure_data_dir()
+    # Prefer secure store if available and encrypted file exists
+    enc_path = os.path.join(os.path.dirname(USERS_PATH), 'users.enc')
+    if _HAS_SECURE and os.path.exists(enc_path):
+        try:
+            return _secure_store.load_users_secure()
+        except Exception:
+            # Fallback to legacy JSON
+            pass
     return _load_json(USERS_PATH)
 
 
 def save_users(obj: Dict) -> None:
     _ensure_data_dir()
+    # Try secure store first
+    if _HAS_SECURE:
+        try:
+            _secure_store.save_users_secure(obj)
+            return
+        except Exception:
+            # Fallback to legacy JSON
+            pass
     _save_json(USERS_PATH, obj)
 
 
